@@ -184,7 +184,7 @@ try:
             now_real = datetime.now().strftime('%H:%M:%S')
 
             if is_question:
-                send_trigger(254)
+                send_trigger(50)
                 stim = visual.TextStim(
                     win,
                     text=f'{sentence}\n\n(Πατήστε N για Ναι, O για Όχι)',
@@ -204,11 +204,30 @@ try:
                         break
             else:
                 words = sentence.split()
-                send_trigger(1)
-                for word in words:
+
+                try:
+                    condition_code = int(row['condition_code'])
+                except Exception:
+                    logging.warning(f"Missing or invalid condition_code in row: {row}")
+                    condition_code = 99
+
+                try:
+                    target_word_index = int(row['target_word'])  # 1-indexed!
+                except Exception:
+                    logging.warning(f"Missing or invalid target_word in row: {row}")
+                    target_word_index = -1
+
+                send_trigger(condition_code)  # Trial onset
+
+                for word_idx, word in enumerate(words, start=1):  # start=1 for 1-indexing
                     word_time = core.getTime() - experiment_start
                     visual.TextStim(win, text=word, color='black', height=40).draw()
-                    send_trigger(100)
+
+                    if word_idx == target_word_index:
+                        send_trigger(condition_code + 3)
+                    else:
+                        send_trigger(condition_code + 1)
+
                     win.flip()
 
                     word_log_entry = {
@@ -258,7 +277,7 @@ try:
             event.waitKeys(keyList=['space'])
 
 except Exception as e:
-    print('Experiment crashed. Saving data...')
+    print('Experiment crashed. Saving data ...')
     traceback.print_exc()
 
 finally:

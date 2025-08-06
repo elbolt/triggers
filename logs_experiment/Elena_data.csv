@@ -1,0 +1,8 @@
+# First SPACE pressed at: 0:00:02.286954
+# Experiment duration: 0:00:15.826670
+trial_num,sentence_id,sentence,question,correct_answer,response,event_time,real_time
+,PAUSE_START,,,,,0:00:03.180464,10:55:19.660
+,PAUSE_RESUME,,,,,0:00:06.067086,10:55:22.547
+,PAUSE_START,,,,,0:00:07.080546,10:55:23.560
+,PAUSE_RESUME,,,,,0:00:10.850658,10:55:27.330
+,PAUSE_START,,,,,0:00:13.103210,10:55:29.583
